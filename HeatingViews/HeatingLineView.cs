@@ -12,6 +12,7 @@ namespace HeatingElements.HeatingViews
     public class HeatingLineView : HeatingViewBase 
     {
         private Color _backColor;
+        
         public sealed override DiagramItem Shape { get; set; }
 
         public Color BackColor
