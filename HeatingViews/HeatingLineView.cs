@@ -4,16 +4,19 @@ using System.Globalization;
 using DevExpress.Diagram.Core;
 using DevExpress.Utils;
 using DevExpress.XtraDiagram;
-using HeatingElements.HeatingViews.Base;
-using HeatingElements.ViewModels;
+using HeatingElements.Common;
+using HeatingElements.HeatingViews.Interfaces;
+using HeatingElements.Models;
+using HeatingElements.Presenters;
 
 namespace HeatingElements.HeatingViews
 {
-    public class HeatingLineView : HeatingViewBase 
+    public class HeatingLineView : IHeatingElementView
     {
+        private readonly HeatingLinePresenter _presenter;
         private Color _backColor;
-        
-        public sealed override DiagramItem Shape { get; }
+
+        public DiagramItem Shape { get; }
 
         public Color BackColor
         {
@@ -28,31 +31,29 @@ namespace HeatingElements.HeatingViews
             }
         }
 
-        public HeatingLineView(HeatingLineViewModel heatingLineViewModel)
+        public HeatingLineView(HeatingLinePresenter presenter)
         {
-            if (heatingLineViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(heatingLineViewModel));
-            }
+            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
 
-            Shape = Create(heatingLineViewModel);
-            Shape.DataContext = heatingLineViewModel;
-            Shape.Bindings.Add(new DiagramBinding("Position", nameof(heatingLineViewModel.Location)));
-            Shape.Bindings.Add(new DiagramBinding("Content", nameof(heatingLineViewModel.Temperature)));
+            Shape = Create();
+
+            Shape.DataContext = _presenter;
+            Shape.Bindings.Add(new DiagramBinding("Position", nameof(_presenter.Location)));
+            Shape.Bindings.Add(new DiagramBinding("Content", nameof(_presenter.Temperature)));
         }
 
-        private DiagramItem Create(HeatingLineViewModel heatingLineViewModel)
+        private DiagramItem Create()
         {
             return new DiagramShape
             {
                 Appearance =
                 {
-                    BackColor = heatingLineViewModel.StateColor,
+                    BackColor = _presenter.StateColor,
                     Font = new Font("Tahoma", 24F)
                 },
-                Content = Convert.ToString(heatingLineViewModel.Temperature, CultureInfo.InvariantCulture),
+                Content = Convert.ToString(_presenter.Temperature, CultureInfo.InvariantCulture),
                 ForegroundId = DiagramThemeColorId.Black,
-                Position = new PointFloat(heatingLineViewModel.Location.X, heatingLineViewModel.Location.Y),
+                Position = new PointFloat(_presenter.Location.X, _presenter.Location.Y),
                 Size = new SizeF(120F, 75F),
                 StrokeId = DiagramThemeColorId.Black
             };

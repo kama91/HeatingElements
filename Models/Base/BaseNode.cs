@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
+using HeatingElements.Common.Extensions;
 using HeatingElements.Properties;
 
 namespace HeatingElements.Models.Base
@@ -24,8 +25,11 @@ namespace HeatingElements.Models.Base
             get => _name;
             set
             {
-                _name = value;
-                OnPropertyChanged();
+                if (_name != value)
+                {
+                    _name = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -35,8 +39,11 @@ namespace HeatingElements.Models.Base
             get => _location;
             set
             {
-                _location = value;
-                OnPropertyChanged();
+                if (_location != value)
+                {
+                    _location = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -60,8 +67,11 @@ namespace HeatingElements.Models.Base
             get => _temperature;
             set
             {
-                _temperature = value;
-                OnPropertyChanged();
+                if (!_temperature.DoubleEquals(value))
+                {
+                    _temperature = value;
+                    OnPropertyChanged();
+                }
             }
         }
 

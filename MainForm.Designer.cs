@@ -69,11 +69,10 @@
             this._panel.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this._panel.Controls.Add(this._btnRun);
             this._panel.Controls.Add(this._btnShowHeatingElements);
-            this._panel.Location = new System.Drawing.Point(0, 906);
-            this._panel.MaximumSize = new System.Drawing.Size(1452, 65);
-            this._panel.MinimumSize = new System.Drawing.Size(1452, 65);
+            this._panel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._panel.Location = new System.Drawing.Point(0, 903);
             this._panel.Name = "_panel";
-            this._panel.Size = new System.Drawing.Size(1452, 65);
+            this._panel.Size = new System.Drawing.Size(1451, 65);
             this._panel.TabIndex = 2;
             // 
             // _btnRun

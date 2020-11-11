@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
+using HeatingElements.Common;
 using HeatingElements.Common.Extensions;
 using HeatingElements.HeatingViews;
 using HeatingElements.Models;
-using HeatingElements.ViewModels.Base;
 
-namespace HeatingElements.ViewModels
+namespace HeatingElements.Presenters
 {
-    public class HeatingLineViewModel : HeatingViewModelBase<HeatingLine, HeatingLineView>
+    public class HeatingLinePresenter : PresenterBase<HeatingLine, HeatingLineView>
     {
         public Color StateColor => Model.State.ToColor();
 
@@ -23,7 +23,7 @@ namespace HeatingElements.ViewModels
             }
         }
 
-        public HeatingLineViewModel(HeatingLine heatingLine) : base(heatingLine)
+        public HeatingLinePresenter(HeatingLine heatingLine) : base(heatingLine)
         {
             View = new HeatingLineView(this);
             Model.PropertyChanged += Model_PropertyChanged;

@@ -5,7 +5,7 @@ using HeatingElements.Properties;
 
 namespace HeatingElements.Common
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class PresenterBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -16,14 +16,19 @@ namespace HeatingElements.Common
         }
     }
 
-    public class ViewModelBase<T> : ViewModelBase, IViewModel<T>
-        where T : class
+    public class PresenterBase<TM, TV> : PresenterBase, IPresenter<TM,TV>
+        where TM : class
+        where TV : class
     {
-        public T Model { get; protected set; }
+        public TM Model { get; protected set; }
 
-        public ViewModelBase(T model)
+        public TV View { get; protected set; }
+
+        public PresenterBase(TM model)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
+            // Для использования под DI достаточно раскомментировать и добавить параметр во все конструкторы
+            //View = view ?? throw new ArgumentNullException(nameof(view));
         }
     }
 }

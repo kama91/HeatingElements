@@ -19,8 +19,11 @@ namespace HeatingElements.Models
             get => _state;
             set
             {
-                _state = value;
-                OnPropertyChanged();
+                if (_state != value)
+                {
+                    _state = value;
+                    OnPropertyChanged();
+                }
             }
         }
 

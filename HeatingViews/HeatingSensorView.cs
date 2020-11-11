@@ -4,38 +4,37 @@ using System.Globalization;
 using DevExpress.Diagram.Core;
 using DevExpress.Utils;
 using DevExpress.XtraDiagram;
-using HeatingElements.HeatingViews.Base;
-using HeatingElements.ViewModels;
+using HeatingElements.HeatingViews.Interfaces;
+using HeatingElements.Presenters;
 
 namespace HeatingElements.HeatingViews
 {
-    public class HeatingSensorView : HeatingViewBase
+    public class HeatingSensorView : IHeatingElementView
     {
-        public sealed override DiagramItem Shape { get; }
+        private readonly HeatingSensorPresenter _presenter;
 
-        public HeatingSensorView(HeatingSensorViewModel heatingSensorViewModel)
+        public DiagramItem Shape { get; }
+
+        public HeatingSensorView(HeatingSensorPresenter heatingSensorPresenter)
         {
-            if (heatingSensorViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(heatingSensorViewModel));
-            }
+            _presenter = heatingSensorPresenter ?? throw new ArgumentNullException(nameof(heatingSensorPresenter));
 
-            Shape = Create(heatingSensorViewModel);
-            Shape.DataContext = heatingSensorViewModel;
+            Shape = Create();
+            Shape.DataContext = _presenter;
         }
 
-        private DiagramItem Create(HeatingSensorViewModel heatingSensorViewModel)
+        private DiagramItem Create()
         {
             return new DiagramShape
             {
                 Appearance =
                 {
-                    BackColor = heatingSensorViewModel.StateColor,
+                    BackColor = _presenter.StateColor,
                     Font = new Font("Tahoma", 24F)
                 },
-                Content = Convert.ToString(heatingSensorViewModel.Temperature, CultureInfo.InvariantCulture),
+                Content = Convert.ToString(_presenter.Temperature, CultureInfo.InvariantCulture),
                 ForegroundId = DiagramThemeColorId.Black,
-                Position = new PointFloat(heatingSensorViewModel.Location.X, heatingSensorViewModel.Location.Y),
+                Position = new PointFloat(_presenter.Location.X, _presenter.Location.Y),
                 Shape = BasicShapes.RoundCornerRectangle,
                 Size = new SizeF(120F, 75F),
                 StrokeId = DiagramThemeColorId.Black

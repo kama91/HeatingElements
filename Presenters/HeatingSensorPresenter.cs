@@ -1,12 +1,12 @@
 ﻿using System.Drawing;
+using HeatingElements.Common;
 using HeatingElements.Common.Extensions;
 using HeatingElements.HeatingViews;
 using HeatingElements.Models;
-using HeatingElements.ViewModels.Base;
 
-namespace HeatingElements.ViewModels
+namespace HeatingElements.Presenters
 {
-    public class HeatingSensorViewModel : HeatingViewModelBase<HeatingSensor, HeatingSensorView>
+    public class HeatingSensorPresenter : PresenterBase<HeatingSensor, HeatingSensorView>
     {
         public Color StateColor => Model.State.ToColor();
         
@@ -22,7 +22,7 @@ namespace HeatingElements.ViewModels
             }
         }
 
-        public HeatingSensorViewModel(HeatingSensor model) : base(model)
+        public HeatingSensorPresenter(HeatingSensor model) : base(model)
         {
             View = new HeatingSensorView(this);
         }

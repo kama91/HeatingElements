@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HeatingElements.Common;
 using HeatingElements.Models;
-using HeatingElements.ViewModels;
+using HeatingElements.Presenters;
 
 namespace HeatingElements
 {
     public partial class MainForm : Form
     {
         private const string Filter = "(*.xml) | *.xml";
-        private HeatingLineViewModel _viewModel;
+        private HeatingLinePresenter _presenter;
 
         public MainForm()
         {
@@ -32,25 +32,25 @@ namespace HeatingElements
 
                 var items = HeatingDataParser.GetParsedItemsFromFile(_openFileDialog.FileName);
                 
-                var viewModels = new List<ViewModelBase>(items.Count);
+                var presenters = new List<PresenterBase>(items.Count);
 
                 foreach (var item in items)
                 {
                     switch (item)
                     {
                         case HeatingPanel heatingPanel:
-                            viewModels.Add(new HeatingPanelViewModel(heatingPanel));
+                            presenters.Add(new HeatingPanelPresenter(heatingPanel));
                             break;
                         case HeatingLine heatingLine:
-                            viewModels.Add(new HeatingLineViewModel(heatingLine));
+                            presenters.Add(new HeatingLinePresenter(heatingLine));
                             break;
                         case HeatingSensor heatingSensor:
-                            viewModels.Add(new HeatingSensorViewModel(heatingSensor));
+                            presenters.Add(new HeatingSensorPresenter(heatingSensor));
                             break;
                     }
                 }
 
-                AddElementsToControl(viewModels);
+                AddElementsToControl(presenters);
             }
             catch (Exception ex)
             {
@@ -58,54 +58,54 @@ namespace HeatingElements
             }
         }
 
-        private void AddElementsToControl(IReadOnlyCollection<ViewModelBase> viewModels)
+        private void AddElementsToControl(IReadOnlyCollection<PresenterBase> presenters)
         {
-            HeatingLineViewModel viewModel = null;
+            HeatingLinePresenter presenter = null;
 
-            foreach (var item in viewModels)
+            foreach (var item in presenters)
             {
-                if (item is HeatingLineViewModel heatingLineViewModel)
+                if (item is HeatingLinePresenter heatingLineViewModel)
                 {
                     if (heatingLineViewModel.Model.Name == "JB1")
                     {
-                        viewModel = heatingLineViewModel;
+                        presenter = heatingLineViewModel;
                         break;
                     }
                 }
             }
 
-            if (viewModel == null)
+            if (presenter == null)
             {
                 return;
             }
 
-            _viewModel = viewModel;
+            _presenter = presenter;
 
-            _diagramControl.Items.Add(viewModel.View.Shape);
+            _diagramControl.Items.Add(presenter.View.Shape);
 
             _diagramControl.FitToDrawing();
 
         }
 
-        private async Task ModelValuesChangeAsync(HeatingLineViewModel heatingLineViewModel)
+        private async Task ModelValuesChangeAsync(HeatingLinePresenter heatingLinePresenter)
         {
             for (var i = 0; i < 100; i++)
             {
-                heatingLineViewModel.Model.Temperature += i;
+                heatingLinePresenter.Model.Temperature += i;
 
                 if (i % 10 == 0)
                 {
-                    heatingLineViewModel.Model.State = State.Alarm;
+                    heatingLinePresenter.Model.State = State.Alarm;
                     Trace.WriteLine("Alarm");
                 }
                 else if (i % 2 == 0)
                 {
-                    heatingLineViewModel.Model.State = State.Warning;
+                    heatingLinePresenter.Model.State = State.Warning;
                     Trace.WriteLine("Warning");
                 }
                 else
                 {
-                    heatingLineViewModel.Model.State = State.GoodOrOff;
+                    heatingLinePresenter.Model.State = State.GoodOrOff;
                     Trace.WriteLine("Good");
                 }
 
@@ -115,7 +115,7 @@ namespace HeatingElements
 
         private async void _btnRun_Click(object sender, EventArgs e)
         {
-            await ModelValuesChangeAsync(_viewModel);
+            await ModelValuesChangeAsync(_presenter);
         }
     }
 }

@@ -4,29 +4,41 @@ using DevExpress.Diagram.Core;
 using DevExpress.Utils;
 using DevExpress.XtraDiagram;
 using HeatingElements.Common.Extensions;
-using HeatingElements.HeatingViews.Base;
-using HeatingElements.ViewModels;
+using HeatingElements.HeatingViews.Interfaces;
+using HeatingElements.Presenters;
 
 namespace HeatingElements.HeatingViews
 {
-    public class HeatingPanelView : HeatingViewBase
+    public class HeatingPanelView : IHeatingElementView
     {
-        public sealed override DiagramItem Shape { get; }
+        private readonly HeatingPanelPresenter _presenter;
 
-        public HeatingPanelView(HeatingPanelViewModel heatingPanelViewModel)
+        public DiagramItem Shape { get; }
+
+        public HeatingLampPresenter IsOnUpsLampPresenter { get; private set; }
+
+        public HeatingLampPresenter IsNetworkOnLampPresenter { get; private set; }
+
+        public HeatingLampPresenter IsPowerOnLampPresenter { get; private set; }
+
+        public HeatingLampPresenter IsEntryAutomateOnLampPresenter { get; private set; }
+
+        public HeatingPanelView(HeatingPanelPresenter heatingPanelPresenter)
         {
-            if (heatingPanelViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(heatingPanelViewModel));
-            }
+            _presenter = heatingPanelPresenter ?? throw new ArgumentNullException(nameof(heatingPanelPresenter));
 
-            Shape = Create(heatingPanelViewModel);
-            Shape.DataContext = heatingPanelViewModel;
+            IsEntryAutomateOnLampPresenter = new HeatingLampPresenter(_presenter.IsEntryAutomateOnLamp);
+            IsOnUpsLampPresenter = new HeatingLampPresenter(_presenter.IsOnUpsLamp);
+            IsNetworkOnLampPresenter = new HeatingLampPresenter(_presenter.IsNetworkOnLamp);
+            IsPowerOnLampPresenter = new HeatingLampPresenter(_presenter.IsPowerOnLamp);
+
+            Shape = Create();
+            Shape.DataContext = _presenter;
         }
 
-        private DiagramItem Create(HeatingPanelViewModel heatingPanelViewModel)
+        private DiagramItem Create()
         {
-           var diagramContainer = new DiagramContainer(heatingPanelViewModel.Location.X, heatingPanelViewModel.Location.Y, 0, 0);
+           var diagramContainer = new DiagramContainer(_presenter.Location.X, _presenter.Location.Y, 0, 0);
 
             var text = new DiagramShape
             {
@@ -39,7 +51,7 @@ namespace HeatingElements.HeatingViews
                         VAlignment = VertAlignment.Top
                     }
                 },
-                Content = $"      {heatingPanelViewModel.Model.Name}\r\n{Properties.Resources.EntryAutomate}\r\n{Properties.Resources.Connection}\r\n{Properties.Resources.OnUps}\r\n{Properties.Resources.Connection}\r\n{Properties.Resources.Temperature} {heatingPanelViewModel.Temperature} °С    \r\n\r\n\r\n",
+                Content = $"      {_presenter.Model.Name}\r\n{Properties.Resources.EntryAutomate}\r\n{Properties.Resources.Connection}\r\n{Properties.Resources.OnUps}\r\n{Properties.Resources.Connection}\r\n{Properties.Resources.Temperature} {_presenter.Temperature} °С    \r\n\r\n\r\n",
                 ForegroundId = DiagramThemeColorId.Black,
                 Position = new PointFloat(0F, 0F),
                 Shape = BasicShapes.RoundCornerRectangle,
@@ -47,14 +59,14 @@ namespace HeatingElements.HeatingViews
                 StrokeId = DiagramThemeColorId.Black
             };
 
-            var entryAutomate = CreateLamp(heatingPanelViewModel.IsEntryAutomateOn, 210F, 50F);
-            var network = CreateLamp(heatingPanelViewModel.IsNetworkOn, 210F, 90F);
-            var powerOn = CreateLamp(heatingPanelViewModel.IsPowerOn, 210F, 130F);
-            var ups = CreateLamp(heatingPanelViewModel.IsOnUps, 210F, 165F);
 
-            diagramContainer.Items.AddRange(text, entryAutomate, network, powerOn, ups);
+            diagramContainer.Items.AddRange(text,
+                IsEntryAutomateOnLampPresenter.View.Shape,
+                IsNetworkOnLampPresenter.View.Shape,
+                IsPowerOnLampPresenter.View.Shape,
+                IsOnUpsLampPresenter.View.Shape);
 
-            if (heatingPanelViewModel.IsAlarm)
+            if (_presenter.IsAlarm)
             {
                 var alarm = new DiagramShape
                 {
