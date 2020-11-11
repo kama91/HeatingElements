@@ -18,7 +18,6 @@ namespace HeatingElements.Models.Base
         [XmlAttribute("Id")]
         public int Id { get; }
         
-
         [XmlAttribute("Name")]
         public string Name
         {
