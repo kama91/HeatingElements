@@ -11,7 +11,7 @@ namespace HeatingElements.HeatingViews
 {
     public class HeatingSensorView : HeatingViewBase
     {
-        public sealed override DiagramItem Shape { get; set; }
+        public sealed override DiagramItem Shape { get; }
 
         public HeatingSensorView(HeatingSensorViewModel heatingSensorViewModel)
         {

@@ -19,7 +19,7 @@ namespace HeatingElements
             InitializeComponent();
         }
 
-        private void _btnOpenFile_Click(object sender, EventArgs e)
+        private void _btnShowHeatingElements_Click(object sender, EventArgs e)
         {
             try
             {

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this._diagramControl = new DevExpress.XtraDiagram.DiagramControl();
-            this._btnShowParseData = new DevExpress.XtraEditors.SimpleButton();
+            this._btnShowHeatingElements = new DevExpress.XtraEditors.SimpleButton();
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._panel = new System.Windows.Forms.Panel();
             this._btnRun = new DevExpress.XtraEditors.SimpleButton();
@@ -51,14 +51,14 @@
             this._diagramControl.TabIndex = 0;
             this._diagramControl.Text = "diagramControl1";
             // 
-            // _btnShowParseData
+            // _btnShowHeatingElements
             // 
-            this._btnShowParseData.Location = new System.Drawing.Point(625, 16);
-            this._btnShowParseData.Name = "_btnShowParseData";
-            this._btnShowParseData.Size = new System.Drawing.Size(136, 34);
-            this._btnShowParseData.TabIndex = 1;
-            this._btnShowParseData.Text = "Show";
-            this._btnShowParseData.Click += new System.EventHandler(this._btnOpenFile_Click);
+            this._btnShowHeatingElements.Location = new System.Drawing.Point(625, 16);
+            this._btnShowHeatingElements.Name = "_btnShowHeatingElements";
+            this._btnShowHeatingElements.Size = new System.Drawing.Size(136, 34);
+            this._btnShowHeatingElements.TabIndex = 1;
+            this._btnShowHeatingElements.Text = "Show";
+            this._btnShowHeatingElements.Click += new System.EventHandler(this._btnShowHeatingElements_Click);
             // 
             // _openFileDialog
             // 
@@ -68,7 +68,7 @@
             // 
             this._panel.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this._panel.Controls.Add(this._btnRun);
-            this._panel.Controls.Add(this._btnShowParseData);
+            this._panel.Controls.Add(this._btnShowHeatingElements);
             this._panel.Location = new System.Drawing.Point(0, 906);
             this._panel.MaximumSize = new System.Drawing.Size(1452, 65);
             this._panel.MinimumSize = new System.Drawing.Size(1452, 65);
@@ -103,7 +103,7 @@
         #endregion
 
         private DevExpress.XtraDiagram.DiagramControl _diagramControl;
-        private DevExpress.XtraEditors.SimpleButton _btnShowParseData;
+        private DevExpress.XtraEditors.SimpleButton _btnShowHeatingElements;
         private System.Windows.Forms.OpenFileDialog _openFileDialog;
         private System.Windows.Forms.Panel _panel;
         private DevExpress.XtraEditors.SimpleButton _btnRun;

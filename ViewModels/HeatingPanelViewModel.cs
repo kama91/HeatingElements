@@ -7,7 +7,6 @@ namespace HeatingElements.ViewModels
 {
     public class HeatingPanelViewModel : HeatingViewModelBase<HeatingPanel, HeatingPanelView>
     {
-        public double Temperature => Model.Temperature;
 
         public PointF Location
         {
@@ -18,6 +17,8 @@ namespace HeatingElements.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public double Temperature => Model.Temperature;
 
         public bool IsAlarm => Model.IsAlarm;
 

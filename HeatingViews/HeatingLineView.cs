@@ -13,7 +13,7 @@ namespace HeatingElements.HeatingViews
     {
         private Color _backColor;
         
-        public sealed override DiagramItem Shape { get; set; }
+        public sealed override DiagramItem Shape { get; }
 
         public Color BackColor
         {
@@ -37,7 +37,7 @@ namespace HeatingElements.HeatingViews
 
             Shape = Create(heatingLineViewModel);
             Shape.DataContext = heatingLineViewModel;
-            //Shape.Bindings.Add(new DiagramBinding("Appearance", nameof(heatingLineViewModel.Appearance), DiagramBindingMode.TwoWay));
+            Shape.Bindings.Add(new DiagramBinding("Position", nameof(heatingLineViewModel.Location)));
             Shape.Bindings.Add(new DiagramBinding("Content", nameof(heatingLineViewModel.Temperature)));
         }
 
