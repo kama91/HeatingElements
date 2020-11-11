@@ -87,7 +87,7 @@ namespace HeatingElements
 
         }
 
-        private async Task ModelValueChangeAsync(HeatingLineViewModel heatingLineViewModel)
+        private async Task ModelValuesChangeAsync(HeatingLineViewModel heatingLineViewModel)
         {
             for (var i = 0; i < 100; i++)
             {
@@ -115,7 +115,7 @@ namespace HeatingElements
 
         private async void _btnRun_Click(object sender, EventArgs e)
         {
-            await ModelValueChangeAsync(_viewModel);
+            await ModelValuesChangeAsync(_viewModel);
         }
     }
 }
